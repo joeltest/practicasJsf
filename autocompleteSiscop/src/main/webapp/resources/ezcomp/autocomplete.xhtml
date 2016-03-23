@@ -1,0 +1,107 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <!-- INTERFACE -->
+    <cc:interface>
+        <!-- value of component -->
+        <cc:attribute name="idForm" 
+                      required="true"                        
+                      displayName="idForm" 
+                      shortDescription="Se refiere al ID de la forma que contiene a este componente.."/>
+
+        <cc:attribute name="idInput" 
+                      displayName="idInput"        
+                      required="true"
+                      shortDescription="Se refiere al ID del componente (input) en donde se autocompletará.."
+                      />
+
+        <!-- value for component -->
+        <cc:attribute name="valueJson" 
+                      displayName="valueJson" 
+                      required="true"
+                      type="com.faces.component.demo.AutocompletePozoAdapter"
+                      shortDescription="Es el valor de la lista de pozos deben ser de tipo com.faces.component.demo.AutocompletePozoAdapter ."
+                      />
+        
+        <cc:attribute name="valueId" 
+                      displayName="idPozo" 
+                      type="java.lang.Integer" 
+                      shortDescription="Es el valor referente al id del Dto seleccionado, este valor debe estar en el ManagedBean, por ejemplo &Xi;{pozoBean.idPozoSeleccionado} debe se ser Integer o int"
+                      />
+
+        <!-- methods -->
+        <!--<cc:attribute name="actionFindByValueSelected" 
+                      displayName="actionFindByValueSelected" 
+                      method-signature="java.lang.String action(ActionEvent)"
+                      shortDescription="Es el nombre del metodo o acción que se ejecutaŕa cuando se seleccione un pozo en el componente..  por ejemplo :  {pozoBean.buscarPozoPorIdSeleccionado(ActionEvent){..}}"
+                      />-->
+
+    </cc:interface>
+
+    <!-- IMPLEMENTATION -->
+    <cc:implementation>
+        <script type="text/javascript" >
+            $(function() {
+                var formId = '#{cc.attrs.idForm}';
+                
+                var inputId = '#{cc.attrs.idInput}';
+
+                var completeIdAutocomplete = '#'+formId+'\\\\:'+inputId;
+                
+                var auto = $('##{cc.attrs.idForm}').find('#{cc.attrs.idInput}');
+                        
+                alert();
+                
+                var pozo_array = #{cc.attrs.valueJson.jsonAdapter};
+
+                //alert(pozo_array);
+                $('#formAutocomplete\\:idAutoComplete').typeahead({
+                    hint: true,
+                    highlight: true,
+                    minLength: 1,
+                    source: pozo_array,
+                    callback: {
+                        onClickAfter: function (node, a, item, event) {
+
+                            $('#' + formId + '\\:value_autocomplete').val(item.name);
+                            //$('#' + formId + '\\:findPozo_siscop').click();
+                        }
+                    }
+                });
+            });
+        </script>  
+
+        <div class="typeahead-container">
+            <div class="typeahead-field">
+                <span class="typeahead-query">                                
+                    <h:inputText id="#{cc.attrs.idInput}"
+                                 style="form-control"
+                                 autocomplete="off"
+                                 /> 
+                    <h:inputHidden id="value_autocomplete" 
+                                   value="#{cc.attrs.valueId}"
+                                   >                                    
+                    </h:inputHidden>                                
+                </span>
+                <span class="typeahead-button">
+                    <button type="submit">
+                        <span class="typeahead-search-icon"></span>
+                    </button>
+                </span>
+            </div>
+        </div>
+        <h:outputLabel value="----- JSON --------"/>
+        <br/>
+        <h:outputLabel value="#{cc.attrs.valueJson.jsonAdapter}"/>
+        <!--<h:commandLink id="findPozo_siscop"
+                       value="Buscar ..."
+                       style="display: none"
+                       actionListener="{cc.attrs.actionFindByValueSelected}"/>-->
+
+
+    </cc:implementation>
+</html>

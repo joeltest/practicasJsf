@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./template.xhtml">
+
+            <ui:define name="top">
+                top
+
+
+            </ui:define>
+
+            <ui:define name="content">
+                timeline
+                <br/>
+                <h:form>                    
+
+                    <h:outputLabel value="idPozo"/>
+                    <h:inputText value="#{managedEventos.idPozo}" />
+
+                    <h:commandButton value="Cargar todo"                                      
+                                     actionListener="#{managedEventos.cargarEventos}"                                   
+                                     >                                                
+
+                    </h:commandButton>  
+                    <h:commandButton value="Ver Graph" onclick="drawVisualization();">
+                        <f:ajax execute="@none" render="@none"/>
+                    </h:commandButton>
+
+
+                    <div id="mytimeline"></div>   
+                    <h:dataTable value="#{managedEventos.listaEventos}"
+                                 var="data">
+                        <h:column>
+                            <h:outputText value="#{data.fecha}">
+                                <f:convertDateTime type="date" dateStyle="short"/>
+                            </h:outputText>
+                        </h:column>
+                        <h:column>
+                            <h:outputText value="#{data.hora}">
+                                <f:convertDateTime type="time" dateStyle="short"/>
+                            </h:outputText>
+                        </h:column>
+                        <h:column>
+                            <h:outputText value="#{data.nombreEvento}">                                
+                            </h:outputText>
+                        </h:column>
+                    </h:dataTable>
+                </h:form>
+
+
+            </ui:define>
+
+            <ui:define name="bottom">
+                <!-- <textarea id="jsonText" style="width: 100%" rows="20"/>                -->
+                <!-- <div id="info"></div>-->
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

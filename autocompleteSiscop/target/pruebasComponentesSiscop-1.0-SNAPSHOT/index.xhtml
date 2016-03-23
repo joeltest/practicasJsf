@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        
+        Demo of Autocomplete
+        
+         <h:form>             
+            <h:outputText value="Hello"/><br/>
+ 
+            <h:selectOneMenu value="#{managedBean.jsonPojo}"                             
+                             >
+                <f:selectItems value="#{managedBean.list}"
+                               var="opt"
+                               itemValue="#{opt.value}"
+                               itemLabel="#{opt.label}"
+                               itemLabelEscaped="true"
+                               />
+                <f:ajax/>
+                <f:converter converterId="jsonPojoConverter"/>
+            </h:selectOneMenu>
+            output
+            <h:outputText value="#{managedBean.jsonPojo.value}"/><br/>
+            <h:outputText value="#{managedBean.jsonPojo.label}"/><br/>
+            <h:outputText value="#{managedBean.jsonPojo.descripcion}"/><br/>            
+            
+        </h:form>
+    </h:body>
+</html>
+

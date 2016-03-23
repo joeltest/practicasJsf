@@ -1,0 +1,90 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./templateAutocomple.xhtml">
+
+            <ui:define name="top">
+                <script type="text/javascript">
+                    $(function () {
+                        var pozo_array = #{managedPozo.jsonPozo};
+                        //alert(pozo_array);
+                        $('#form\\:my_autocomplete').typeahead({
+                            hint: true,
+                            highlight: true,
+                            minLength: 1,
+                            source: pozo_array,
+                            callback: {
+                                onClickAfter: function (node, a, item, event) {
+
+                                    $('#form\\:value_autocomplete').val(item.name);
+                                    $('#form\\:findPozo').click();
+                                }
+                            }
+                        });
+                    });
+                </script>            
+            </ui:define>
+
+            <ui:define name="content">
+                <h:form id="form">
+
+                    <div class="typeahead-container">
+                        <div class="typeahead-field">
+                            <span class="typeahead-query">                                
+                                <h:inputText id="my_autocomplete"
+                                             style="form-control"
+                                             autocomplete="off"
+                                             /> 
+
+                                <h:inputHidden id="value_autocomplete" 
+                                               value="#{managedPozo.idPozo}"
+                                               >                                    
+                                </h:inputHidden>                                
+
+                            </span>
+                            <span class="typeahead-button">
+                                <button type="submit">
+                                    <span class="typeahead-search-icon"></span>
+                                </button>
+                            </span>
+                        </div>
+
+                    </div>
+
+                    <h:commandLink  id="findPozo"
+                                    value="Buscar ..."
+                                    style="display: none"
+                                    actionListener="#{managedPozo.findPozo(ev)}"/>
+
+                    <h:outputLabel value="selecciona autocomplete #{managedPozo.pozoDto.nombre}"/>
+
+                    <h:commandLink  
+                        value="Buscar ..."  
+                        actionListener="#{busquedaPozoBean.cargarDatosPozo(ev)}"/>
+                    <br/>
+                    <h:outputLabel value="seleccion en busqueda bean #{busquedaPozoBean.pozoDto.nombre}"/>
+
+
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <h:outputLabel value="#{managedPozo.jsonPozo}"/>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>
